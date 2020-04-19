@@ -127,3 +127,19 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+/data/bak/
+/data/01_idp_jan_19.xlsx
+/data/02_idp_feb_19.xlsm
+/data/03_idp_mar_19.xlsm
+/data/04_idp_apr_19.xlsm
+/data/05_idp_may_19.xlsm
+/data/06_idp_jun_19.xlsm
+/data/07_idp_jul_19.xlsm
+/data/08_idp_aug_19.xlsx
+/data/09_idp_sep_19.xlsx
+/data/10_idp_oct_19.xlsx
+/data/11_idp_nov_19.xlsx
+/data/12_idp_dec_19.xlsx
+/data/13_idp_jan_20.xlsx
+/data/14_idp_feb_20.xlsx
+/data/conflict_data_syr.csv
