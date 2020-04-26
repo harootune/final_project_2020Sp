@@ -1,4 +1,6 @@
 import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
 from pathlib import Path
 
 DATE_CODES = ['2019-1', '2019-2', '2019-3', '2019-4', '2019-5', '2019-6', '2019-7', '2019-8', '2019-9', '2019-10',
@@ -50,20 +52,31 @@ def extract_idp_data(idp_data: pd.DataFrame, admin_district: str) -> pd.DataFram
     return extracted_idp_data
 
 
+
 def calculate_conflict_movement_correlation(conflict_data: pd.DataFrame, idp_data: pd.DataFrame,
-                                            event_type: str = '', admin_district: str = ''):
+                                            event_type: str = '', admin_district: str = '', delta: bool = False):
     """
 
     :param conflict_data:
     :param idp_data:
     :param event_type:
     :param admin_district:
+    :param delta:
     :return:
     """
     extracted_conflict_data = extract_conflict_data(conflict_data, admin_district, event_type)
+    print(extracted_conflict_data)
     extracted_idp_data = extract_idp_data(idp_data, admin_district)
+    print(extracted_idp_data)
     corr_frame = extracted_conflict_data.join(extracted_idp_data)
-    print(corr_frame.corr())
+    if delta:
+        corr_frame = corr_frame.pct_change()
+        corr_frame = corr_frame.drop(labels='2019-1')
+
+    labels = {'iso': 'conflict', 'Grand Total': 'movement'}
+    corr_frame = corr_frame.corr().rename(columns=labels, index=labels)
+
+    return corr_frame
 
 
 def main() -> None:
@@ -104,8 +117,17 @@ def main() -> None:
     idp_data = idp_data.drop(labels='Unknown')  # TODO: DON'T FORGET TO MENTION THAT THIS IS BEING DROPPED
     idp_data.columns = DATE_CODES
 
+    print(calculate_conflict_movement_correlation(conflict_data, idp_data, delta=True))
+
+    corr_hist = pd.DataFrame(index=DISTRICTS, columns=['correlation'])
+
     for district in DISTRICTS:
-        calculate_conflict_movement_correlation(conflict_data, idp_data, admin_district=district)
+        corr_hist.loc[district] = calculate_conflict_movement_correlation(conflict_data, idp_data, event_type='', admin_district=district, delta=True).loc[district][0]
+
+    print(corr_hist)
+    plt.bar(range(len(DISTRICTS)), corr_hist['correlation'].fillna(0).values, tick_label=DISTRICTS, align='center')
+    plt.xticks(rotation='vertical')
+    plt.show()
 
 
 main()
