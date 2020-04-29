@@ -165,7 +165,8 @@ def calculate_conflict_movement_correlation(conflict_data: pd.DataFrame, idp_dat
                                             event_type: str = '', admin_district: str = '', party: str = '',
                                             delta: bool = False, fatal: bool = False) -> pd.DataFrame:
     """
-
+    This function produces a pearson's r correlation matroix which describes the correlation between a conflict variable
+    (specified via keyword arguments) and IDP movement over a specified date range.
 
     :param conflict_data: a dataframe produced by clean_conflict_data
     :param idp_data: a dataframe produced by aggregate_idp_data
@@ -197,6 +198,8 @@ def calculate_conflict_movement_correlation(conflict_data: pd.DataFrame, idp_dat
 def district_wise_correlations(districts: list, conflict_data: pd.DataFrame, idp_data: pd.DataFrame, date_codes: list,
                                event_type: str = '', party: str = '', delta: bool = False, fatal: bool = False) -> pd.DataFrame:
     """
+    This function produces a dataframe showing correlation between a specified conflict variable and IDP movement for
+    a subset (or all) of the governorates in Syria.
 
     :param districts: a list of districts to produce calculate correlation statistics for
     :param conflict_data: a dataframe produced by clean_conflict_data
