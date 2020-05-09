@@ -3,7 +3,7 @@ This module is intended to partially fulfill the requirements for the IS 590PR S
 
 Intended to support conflict_and_movement_in_syria_2019-2020.ipynb
 
-Running as a main will print a small demonstration of correlation analysis using the functions in this module.
+Running as main will print a small demonstration of correlation analysis using the functions in this module.
 
 Name: conflict_movement_analysis_utils.py
 Date (MM-DD-YYYY): 04-29-2020
@@ -26,9 +26,9 @@ def clean_conflict_data(conflict_data_path: str) -> pd.DataFrame:
     :return: a dataframe containing information from the ACLED file adjusted for inter-function compatibility
     >>> conflict_data = clean_conflict_data('data/conflict_data_syr.csv')
     >>> conflict_data['event_date'].dtype #doctest: +NORMALIZE_WHITESPACE
-        dtype('<M8[ns]')
+    dtype('<M8[ns]')
     >>> conflict_data.iloc[0]['date_code'] #doctest: +NORMALIZE_WHITESPACE
-        '2020-3'
+    '2020-3'
     """
     conflict_data_path = Path(conflict_data_path)
     conflict = pd.read_csv(conflict_data_path, index_col='data_id')
@@ -48,7 +48,7 @@ def aggregate_idp_data(idp_data_paths: list, date_codes: list, districts: list) 
     Aggregates a dataframe containing IDP movement totals within a certain date-range from a series of IDP movement
     monthly reports produced by OCHA Turkey. The dataframe is made for inter-function compatibility within this file.
 
-    IMPORT NOTE: Counts of movement from "Unknown" origins are dropped, but are implicitly included in grand totals
+    IMPORTANT NOTE: Counts of movement from "Unknown" origins are dropped, but are implicitly included in grand totals
     of IDP movement for the entire country.
 
     :param idp_data_paths: a list of paths to IDP movement data files per month. PATH ORDER MUST MATCH DATE CODES
@@ -95,6 +95,7 @@ def extract_conflict_data(conflict_data: pd.DataFrame, date_codes: list, admin_d
     :return: a dataframe containing the specified subset
     """
     # Stacking and unstacking inspired by this post: https://stackoverflow.com/questions/37003100/pandas-groupby-for-zero-values
+    # Use of df.query() method patterned after examples here: https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.query.html
 
     extracted_conflict_data = conflict_data
 
@@ -152,6 +153,20 @@ def extract_idp_data(idp_data: pd.DataFrame, admin_district: str) -> pd.DataFram
     :param idp_data: a dataframe produced by aggregate_idp_data
     :param admin_district: a specific administrative district to select data for
     :return: a dataframe containing the specified subset
+
+    >>> data_paths = ['test/idp_1.xlsx', 'test/idp_2.xlsx']
+    >>> date_codes = ['2030-1', '2030-2']
+    >>> districts = ["Aleppo", "Al-Hasakeh", "Ar-Raqqa", "As-Sweida", "Damascus", "Dar'a", "Deir-ez-Zor","Hama", \
+        "Homs", "Idleb", "Lattakia", "Quneitra", "Rural Damascus", "Tartous"]
+    >>> aggregated_data = aggregate_idp_data(data_paths, date_codes, districts)
+    >>> extract_idp_data(aggregated_data, "Aleppo") #doctest: +NORMALIZE_WHITESPACE
+    2030-1    3.0
+    2030-2    2.0
+    Name: Aleppo, dtype: float64
+    >>> extract_idp_data(aggregated_data, '') #doctest: +NORMALIZE_WHITESPACE
+    2030-1    92096.17522
+    2030-2    92095.17522
+    Name: Grand Total, dtype: float64
     """
     if admin_district:
         extracted_idp_data = idp_data.loc[admin_district]
