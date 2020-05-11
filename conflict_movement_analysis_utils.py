@@ -93,6 +93,44 @@ def extract_conflict_data(conflict_data: pd.DataFrame, date_codes: list, admin_d
     :param party: selects a specific party to extract data for
     :param fatal: if True, counts number of fatalities instead of number of events
     :return: a dataframe containing the specified subset
+
+    >>> conflict_data = clean_conflict_data('data/conflict_data_syr.csv')
+    >>> date_codes = ['2019-1', '2019-2', '2019-3', '2019-4', '2019-5', '2019-6', '2019-7', '2019-8', '2019-9', \
+    '2019-10', '2019-11', '2019-12', '2020-1', '2020-2']
+    >>> extract_conflict_data(conflict_data, date_codes, '', '', '') #doctest: +NORMALIZE_WHITESPACE
+                    iso
+        date_code
+        2019-1     1396
+        2019-2     1336
+        2019-3     1673
+        2019-4     1688
+        2019-5     1913
+        2019-6     1639
+        2019-7     2030
+        2019-8     1493
+        2019-9     1077
+        2019-10    1750
+        2019-11    1847
+        2019-12    1517
+        2020-1     1392
+        2020-2     1529
+    >>> extract_conflict_data(conflict_data, date_codes, 'Aleppo', '', '') #doctest: +NORMALIZE_WHITESPACE
+                     0
+        date_code
+        2019-1     314
+        2019-2     157
+        2019-3     229
+        2019-4     272
+        2019-5     219
+        2019-6     150
+        2019-7     221
+        2019-8     162
+        2019-9     184
+        2019-10    302
+        2019-11    298
+        2019-12    165
+        2020-1     376
+        2020-2     550
     """
     # Stacking and unstacking inspired by this post: https://stackoverflow.com/questions/37003100/pandas-groupby-for-zero-values
     # Use of df.query() method patterned after examples here: https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.query.html

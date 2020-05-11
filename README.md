@@ -17,8 +17,7 @@ A version of the notebook with a recently-executed kernel is included in the rep
 2. Unzip "UNZIP_ME_data_files.zip" \(located in final_project_2020Sp/data\), outputting to the same directory the file is located in
 3. Open "conflict_and_movement_in_syria_2019-2020.ipynb" using your desired Jupyter Notebook viewer
 4. Reset the notebook's kernel and rerun in sequence
-
-Running "conflict_movement_analysis_utils.py" as \__main\__ will also produce a small demonstration testing the same hypotheses as the notebook
+5. Running "conflict_movement_analysis_utils.py" as \__main\__ will also produce a small demonstration testing the same hypotheses as the notebook
 
 #### Hypotheses
 
